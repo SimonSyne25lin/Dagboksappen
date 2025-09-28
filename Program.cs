@@ -1,4 +1,9 @@
-﻿namespace Dagboksappen
+using Dagboksappen;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Dagboksappen
 {
     public class DiaryEntry
     {
@@ -8,11 +13,10 @@
 
     public class Program
     {
-        static List<DiaryEntry> entries = new();
+        private static List<DiaryEntry> entries = new();
 
         public static void Main(string[] args)
         {
-
             while (true)
             {
                 Console.WriteLine("Välj ett alternativ");
@@ -26,30 +30,45 @@
 
                 switch (choice)
                 {
-                    case "1":
-                        AddEntry();
-                        break;
-                    case "2":
-                        ListEntries();
-                        break;
-                    case "3":
-                        SearchEntry();
-                        break;
-                    case "4":
-                        SaveEntry();
-                        break;
-                    case "5":
-                        ReadEntry();
-                        break;
+                    case "1": AddEntry(); break;
+                    case "2": ListEntries(); break;
+                    case "3": SearchEntry(); break;
+                    case "4": SaveEntry(); break;
+                    case "5": ReadEntry(); break;
                     case "6": return;
-                    default:
-                        Console.WriteLine("Ogiltigt val.");
-                        break;
+                    default: Console.WriteLine("Ogiltigt val."); break;
                 }
             }
-            
         }
-        static void SearchEntry()
+
+        private static void AddEntry()
+        {
+            Console.WriteLine("Skriv datum här: (YYYY-MM-DD)");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            {
+                Console.WriteLine("Ogiltigt datum.");
+                return;
+            }
+
+            Console.WriteLine("Skriv din anteckning här:");
+            string text = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                Console.WriteLine("Anteckningen kan inte vara tom.");
+                return;
+            }
+
+            entries.Add(new DiaryEntry { Date = date, Text = text });
+            Console.WriteLine("Anteckning tillagd.");
+        }
+
+        private static void ListEntries()
+        {
+            foreach (var entry in entries)
+                Console.WriteLine($"{entry.Date:yyyy-MM-dd}: {entry.Text}");
+        }
+
+        private static void SearchEntry()
         {
             Console.Write("Sök datum (YYYY-MM-DD): ");
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
@@ -64,5 +83,8 @@
             else
                 Console.WriteLine("Ingen anteckning hittades.");
         }
+
+        private static void SaveEntry() { /* placeholder */ }
+        private static void ReadEntry() { /* placeholder */ }
     }
 }
