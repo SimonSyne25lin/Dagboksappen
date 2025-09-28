@@ -1,7 +1,9 @@
 using Dagboksappen;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 
 namespace Dagboksappen
 {
@@ -84,7 +86,42 @@ namespace Dagboksappen
                 Console.WriteLine("Ingen anteckning hittades.");
         }
 
-        private static void SaveEntry() { /* placeholder */ }
-        private static void ReadEntry() { /* placeholder */ }
+        static string filePath = "diary.json";
+
+        private static void SaveEntry()
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(entries, Newtonsoft.Json.Formatting.Indented); // Genererat med Copilot
+                File.WriteAllText(filePath, json);
+                Console.WriteLine("Sparat till fil.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fel vid sparning: " + ex.Message);
+                File.AppendAllText("error.log", ex.ToString() + "\n");
+            }
+        }
+        private static void ReadEntry()
+        {
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    Console.WriteLine("Filen saknas.");
+                    return;
+                }
+
+                var json = File.ReadAllText(filePath);
+                entries = JsonConvert.DeserializeObject<List<DiaryEntry>>(json) ?? new List<DiaryEntry>(); // Genererat med Copilot
+                Console.WriteLine("Läst från fil.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fel vid läsning: " + ex.Message);
+                File.AppendAllText("error.log", ex.ToString() + "\n");
+            }
+        }
+        
     }
 }
