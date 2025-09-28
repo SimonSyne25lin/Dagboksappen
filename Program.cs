@@ -8,6 +8,8 @@
 
     public class Program
     {
+        static List<DiaryEntry> entries = new();
+
         public static void Main(string[] args)
         {
 
@@ -46,6 +48,21 @@
                 }
             }
             
+        }
+        static void SearchEntry()
+        {
+            Console.Write("Sök datum (YYYY-MM-DD): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            {
+                Console.WriteLine("Ogiltigt datum.");
+                return;
+            }
+
+            var match = entries.FirstOrDefault(e => e.Date.Date == date.Date);
+            if (match != null)
+                Console.WriteLine($"{match.Date:yyyy-MM-dd}: {match.Text}");
+            else
+                Console.WriteLine("Ingen anteckning hittades.");
         }
     }
 }
