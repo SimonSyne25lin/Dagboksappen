@@ -1,6 +1,7 @@
-﻿using Dagboksappen;
+using Dagboksappen;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dagboksappen
 {
@@ -29,25 +30,13 @@ namespace Dagboksappen
 
                 switch (choice)
                 {
-                    case "1":
-                        AddEntry();
-                        break;
-                    case "2":
-                        ListEntries();
-                        break;
-                    case "3":
-                        SearchEntry();
-                        break;
-                    case "4":
-                        SaveEntry();
-                        break;
-                    case "5":
-                        ReadEntry();
-                        break;
+                    case "1": AddEntry(); break;
+                    case "2": ListEntries(); break;
+                    case "3": SearchEntry(); break;
+                    case "4": SaveEntry(); break;
+                    case "5": ReadEntry(); break;
                     case "6": return;
-                    default:
-                        Console.WriteLine("Ogiltigt val.");
-                        break;
+                    default: Console.WriteLine("Ogiltigt val."); break;
                 }
             }
         }
@@ -60,6 +49,7 @@ namespace Dagboksappen
                 Console.WriteLine("Ogiltigt datum.");
                 return;
             }
+
             Console.WriteLine("Skriv din anteckning här:");
             string text = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(text))
@@ -67,6 +57,7 @@ namespace Dagboksappen
                 Console.WriteLine("Anteckningen kan inte vara tom.");
                 return;
             }
+
             entries.Add(new DiaryEntry { Date = date, Text = text });
             Console.WriteLine("Anteckning tillagd.");
         }
@@ -77,9 +68,23 @@ namespace Dagboksappen
                 Console.WriteLine($"{entry.Date:yyyy-MM-dd}: {entry.Text}");
         }
 
-        // Placeholder methods 
-        private static void SearchEntry() { }
-        private static void SaveEntry() { }
-        private static void ReadEntry() { }
+        private static void SearchEntry()
+        {
+            Console.Write("Sök datum (YYYY-MM-DD): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            {
+                Console.WriteLine("Ogiltigt datum.");
+                return;
+            }
+
+            var match = entries.FirstOrDefault(e => e.Date.Date == date.Date);
+            if (match != null)
+                Console.WriteLine($"{match.Date:yyyy-MM-dd}: {match.Text}");
+            else
+                Console.WriteLine("Ingen anteckning hittades.");
+        }
+
+        private static void SaveEntry() { /* placeholder */ }
+        private static void ReadEntry() { /* placeholder */ }
     }
 }
