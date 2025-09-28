@@ -114,7 +114,23 @@ namespace Dagboksappen
 
                 var json = File.ReadAllText(filePath);
                 entries = JsonConvert.DeserializeObject<List<DiaryEntry>>(json) ?? new List<DiaryEntry>(); // Genererat med Copilot
-                Console.WriteLine("Läst från fil.");
+                Console.Write("Vilket datum vill du läsa? (YYYY-MM-DD): ");
+                if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+                {
+                    Console.WriteLine("Ogiltigt datum.");
+                    return;
+                }
+
+                
+                var match = entries.FirstOrDefault(e => e.Date.Date == date.Date);
+                if (match != null)
+                {
+                    Console.WriteLine($"\n📖 Anteckning för {match.Date:yyyy-MM-dd}:\n{match.Text}");
+                }
+                else
+                {
+                    Console.WriteLine("Ingen anteckning hittades för det datumet.");
+                }
             }
             catch (Exception ex)
             {
