@@ -10,8 +10,9 @@
     {
         public static void Main(string[] args)
         {
-            
-            while (true) {
+
+            while (true)
+            {
                 Console.WriteLine("Välj ett alternativ");
                 Console.WriteLine("1. Skriv ny anteckning");
                 Console.WriteLine("2. Anteckningslista");
@@ -20,23 +21,31 @@
                 Console.WriteLine("5. Läs fil");
                 Console.WriteLine("6. Avsluta");
                 var choice = Console.ReadLine();
-                
-                switch(choice)
+
+                switch (choice)
                 {
-                    case "1": AddEntry();
+                    case "1":
+                        AddEntry();
                         break;
-                    case "2": ListEntries();
+                    case "2":
+                        ListEntries();
                         break;
-                    case "3": SearchEntry();
+                    case "3":
+                        SearchEntry();
                         break;
-                    case "4": SaveEntry();
+                    case "4":
+                        SaveEntry();
                         break;
-                    case "5": ReadEntry();
+                    case "5":
+                        ReadEntry();
                         break;
                     case "6": return;
-                    default: Console.WriteLine("Ogiltigt val.");
+                    default:
+                        Console.WriteLine("Ogiltigt val.");
                         break;
                 }
+            }
+            
         }
     }
 }
